@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AI</title>
+</head>
+<body>
+    <form id="chatForm">
+        <div><textarea id="prompt" name="prompt" cols="80" rows="5" placeholder="Enter your prompt here"></textarea></div>
+        <div><button type="submit">Submit</button></div>
+    </form>
+    <div id="response"></div>
+    <button id="copyButton" style="display: none;">Copy to Clipboard</button>
+    <script>
+        document.getElementById('chatForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            document.getElementById('response').innerText = '';
+            document.getElementById('copyButton').style.display = 'none';
+            const prompt = document.getElementById('prompt').value;
+            const response = await fetch('/ai', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt })
+            }).then(res => res.json());
+            document.getElementById('response').innerText = response.response;
+            document.getElementById('copyButton').style.display = 'block';
+        });
+
+        document.getElementById('copyButton').addEventListener('click', () => {
+            const responseText = document.getElementById('response').innerText;
+            navigator.clipboard.writeText(responseText);
+            document.getElementById('copyButton').innerText = 'Copied!';
+            setTimeout(() => {
+                document.getElementById('copyButton').innerText = 'Copy to Clipboard';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+    <div id="response"></div>
+    <script>
+        document.getElementById('chatForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const prompt = document.getElementById('prompt').value;
+            const response = await fetch('/ai', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt })
+            }).then(res => res.json());
+            document.getElementById('response').innerText = response.response;
+        });
+    </script>
+</body>
+</html>
